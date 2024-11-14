@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.eiman.ejq.TemporizadorController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.layout.ColumnConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eiman.ejq.TemporizadorController" hgap="10" vgap="10" padding="20">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="20"/>
+    </columnConstraints>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+    <!-- Etiquetas para los minutos -->
+    <Label fx:id="labelMinutos1" text="0" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 40px;"/>
+    <Label fx:id="labelMinutos2" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-size: 40px;"/>
+    <Label fx:id="labelSegundos1" text="0" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-size: 40px;"/>
+    <Label fx:id="labelSegundos2" text="0" GridPane.columnIndex="3" GridPane.rowIndex="0" style="-fx-font-size: 40px;"/>
+
+    <!-- Espacio vacío en la columna 4 (puede agregar botones o más elementos aquí si es necesario) -->
+    <Label GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+</GridPane>
