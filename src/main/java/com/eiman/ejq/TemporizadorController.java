@@ -21,22 +21,35 @@ import java.util.TimerTask;
  */
 public class TemporizadorController {
 
-    private IntegerProperty tiempo;  // Tiempo en minutos
-    private BooleanProperty fin;     // Estado de la cuenta atras
-    private Timer timer;  // Cronometro de la cuenta atras
+    // Propiedad que representa el tiempo en minutos
+    private IntegerProperty tiempo;
 
+    // Propiedad booleana que indica si el temporizador ha terminado
+    private BooleanProperty fin;
+
+    // Objeto Timer que maneja la cuenta atras
+    private Timer timer;
+
+    // Etiqueta para la primera cifra de los minutos
     @FXML
-    private Label labelMin1;  // Primera cifra de los minutos
+    private Label labelMin1;
+
+    // Etiqueta para la segunda cifra de los minutos
     @FXML
-    private Label labelMin2;  // Segunda cifra de los minutos
+    private Label labelMin2;
+
+    // Etiqueta para la primera cifra de los segundos
     @FXML
-    private Label labelSeg1; // Primera cifra de los segundos
+    private Label labelSeg1;
+
+    // Etiqueta para la segunda cifra de los segundos
     @FXML
-    private Label labelSeg2; // Segunda cifra de los segundos
+    private Label labelSeg2;
 
     /**
      * Constructor del controlador.
-     * Inicializa las propiedades del tiempo y estado de la cuenta atras.
+     * Inicializa las propiedades del tiempo y estado de la cuenta atras,
+     * y carga el archivo FXML correspondiente.
      */
     public TemporizadorController() {
         this.fin = new SimpleBooleanProperty(false); // Inicializa la propiedad fin como false
@@ -51,14 +64,22 @@ public class TemporizadorController {
         }
     }
 
+    /**
+     * Establece el tiempo en minutos para el temporizador.
+     * @param minutos el tiempo en minutos (entre 1 y 99)
+     * @return true si el tiempo es valido, false en caso contrario
+     */
     public boolean setTiempo(int minutos) {
         if (minutos >= 1 && minutos <= 99) {
             this.tiempo.set(minutos);
             return true;
         }
-        return false; // Devuelve false si los minutos no están entre 1 y 99
+        return false; // Devuelve false si los minutos no estan entre 1 y 99
     }
 
+    /**
+     * Inicia el temporizador y comienza la cuenta atras.
+     */
     public void iniciar() {
         if (this.tiempo.get() <= 0) {
             System.err.println("Asigna los minutos antes de iniciar el temporizador");
@@ -68,6 +89,7 @@ public class TemporizadorController {
         timer = new Timer();
         int totalSegundos = this.tiempo.get() * 60;
 
+        // Programa la tarea que actualiza el temporizador cada segundo
         timer.scheduleAtFixedRate(new TimerTask() {
             private int restante = totalSegundos;
 
@@ -83,7 +105,7 @@ public class TemporizadorController {
                 int minutos = restante / 60;
                 int segundos = restante % 60;
 
-                // Actualiza la interfaz usando Platform.runLater
+                // Actualiza la interfaz de usuario en el hilo principal
                 Platform.runLater(() -> {
                     labelMin1.setText(String.valueOf(minutos / 10));
                     labelMin2.setText(String.valueOf(minutos % 10));
@@ -96,6 +118,9 @@ public class TemporizadorController {
         }, 0, 1000);
     }
 
+    /**
+     * Detiene el temporizador y cancela la tarea programada.
+     */
     public void detener() {
         if (timer != null) {
             timer.cancel();
@@ -104,9 +129,12 @@ public class TemporizadorController {
         }
     }
 
+    /**
+     * Aplica un estilo visual indicando que el temporizador esta detenido.
+     */
     public void estiloParado() {
         Platform.runLater(() -> {
-            // Aplica el estilo a un nodo específico
+            // Aplica el estilo a las etiquetas si no son nulas
             if (labelMin1 != null) {
                 labelMin1.getStyleClass().add("parado");
             }
@@ -122,12 +150,19 @@ public class TemporizadorController {
         });
     }
 
+    /**
+     * Obtiene la propiedad booleana que indica si el temporizador ha terminado.
+     * @return la propiedad booleana fin
+     */
     public BooleanProperty finProperty() {
         return fin;
     }
 
+    /**
+     * Obtiene la propiedad del tiempo en minutos del temporizador.
+     * @return la propiedad del tiempo
+     */
     public IntegerProperty tiempoProperty() {
         return tiempo;
     }
-
 }
