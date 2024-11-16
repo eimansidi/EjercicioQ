@@ -19,7 +19,7 @@ import java.util.TimerTask;
  * Este controlador maneja la logica del temporizador y actualiza las etiquetas
  * con el tiempo restante en formato de minutos y segundos.
  */
-public class TemporizadorController {
+public class TemporizadorController extends AnchorPane{
 
     // Propiedad que representa el tiempo en minutos
     private int segundos;
@@ -55,6 +55,7 @@ public class TemporizadorController {
         this.fin = new SimpleBooleanProperty(false);
         this.segundos = -1;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EjQ.fxml"));
+        fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
