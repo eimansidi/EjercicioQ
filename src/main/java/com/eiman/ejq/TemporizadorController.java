@@ -22,7 +22,7 @@ import java.util.TimerTask;
 public class TemporizadorController {
 
     // Propiedad que representa el tiempo en minutos
-    private IntegerProperty tiempo;
+    private int segundos;
 
     // Propiedad booleana que indica si el temporizador ha terminado
     private BooleanProperty fin;
@@ -52,10 +52,9 @@ public class TemporizadorController {
      * y carga el archivo FXML correspondiente.
      */
     public TemporizadorController() {
-        this.fin = new SimpleBooleanProperty(false); // Inicializa la propiedad fin como false
-        this.tiempo = new SimpleIntegerProperty(-1); // Inicializa la propiedad tiempo a -1
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EjQ.fxml"));
-        fxmlLoader.setRoot(this);
+        this.fin = new SimpleBooleanProperty(false);
+        this.segundos = -1;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EjQ.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -65,57 +64,62 @@ public class TemporizadorController {
     }
 
     /**
-     * Establece el tiempo en minutos para el temporizador.
-     * @param minutos el tiempo en minutos (entre 1 y 99)
-     * @return true si el tiempo es valido, false en caso contrario
+     * Función que asigna los segundos al temporizador
+     *
+     * @param segundos del temporizador
+     * @return true/false
      */
-    public boolean setTiempo(int minutos) {
-        if (minutos >= 1 && minutos <= 99) {
-            this.tiempo.set(minutos);
-            return true;
+    public boolean setSegundos(int segundos) {
+        if (segundos >= 60) {
+            int minutos = (int) (segundos / 60);
+            if (minutos < 100) {
+                this.segundos = segundos;
+                return true;
+            }
+        } else {
+            if (segundos > 0) {
+                this.segundos = segundos;
+                return true;
+            }
         }
-        return false; // Devuelve false si los minutos no estan entre 1 y 99
+        return false;
     }
 
     /**
      * Inicia el temporizador y comienza la cuenta atras.
      */
     public void iniciar() {
-        if (this.tiempo.get() <= 0) {
-            System.err.println("Asigna los minutos antes de iniciar el temporizador");
-            return;
-        }
-
-        timer = new Timer();
-        int totalSegundos = this.tiempo.get() * 60;
-
-        // Programa la tarea que actualiza el temporizador cada segundo
-        timer.scheduleAtFixedRate(new TimerTask() {
-            private int restante = totalSegundos;
-
-            @Override
-            public void run() {
-                if (restante < 0) {
-                    timer.cancel();
-                    estiloParado();
-                    Platform.runLater(() -> fin.set(true)); // Indica que el temporizador ha terminado
-                    return;
+        if (this.segundos == -1) {
+            System.err.println("Asigna los segundos antes de iniciar el temporizador");
+        } else {
+            final int[] restante = {this.segundos};
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (restante[0] < 0) {
+                        timer.cancel();
+                        estiloParado();
+                        Platform.runLater(() -> fin.set(true)); // Actualizar la propiedad fin para indicar que el temporizador ha terminado
+                        return;
+                    }
+                    int mins = restante[0] / 60;
+                    int mins1 = mins / 10;
+                    int mins2 = mins % 10;
+                    int segs = restante[0] % 60;
+                    int segs1 = segs / 10;
+                    int segs2 = segs % 10;
+                    // Usar Platform.runLater para actualizar los labels del temporizador
+                    Platform.runLater(() -> {
+                        labelMin1.setText(mins1 + "");
+                        labelMin2.setText(mins2 + "");
+                        labelSeg1.setText(segs1 + "");
+                        labelSeg2.setText(segs2 + "");
+                    });
+                    restante[0] -= 1;
                 }
-
-                int minutos = restante / 60;
-                int segundos = restante % 60;
-
-                // Actualiza la interfaz de usuario en el hilo principal
-                Platform.runLater(() -> {
-                    labelMin1.setText(String.valueOf(minutos / 10));
-                    labelMin2.setText(String.valueOf(minutos % 10));
-                    labelSeg1.setText(String.valueOf(segundos / 10));
-                    labelSeg2.setText(String.valueOf(segundos % 10));
-                });
-
-                restante--; // Decrementa los segundos restantes
-            }
-        }, 0, 1000);
+            }, 0, 1000);
+        }
     }
 
     /**
@@ -156,13 +160,5 @@ public class TemporizadorController {
      */
     public BooleanProperty finProperty() {
         return fin;
-    }
-
-    /**
-     * Obtiene la propiedad del tiempo en minutos del temporizador.
-     * @return la propiedad del tiempo
-     */
-    public IntegerProperty tiempoProperty() {
-        return tiempo;
     }
 }
