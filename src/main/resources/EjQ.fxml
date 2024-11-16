@@ -13,15 +13,14 @@
         <ColumnConstraints percentWidth="20" />
     </columnConstraints>
 
-    <!-- Etiquetas para los minutos -->
-    <Label fx:id="labelMinutos1" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <Label fx:id="labelMinutos2" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <Label fx:id="labelMin1" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <Label fx:id="labelMin2" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="59.0" prefWidth="30.0" text=":" GridPane.columnIndex="2">
       <font>
          <Font size="36.0" />
       </font></Label>
-    <Label fx:id="labelSegundos1" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="3" />
-    <Label fx:id="labelSegundos2" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="4" />
+    <Label fx:id="labelSeg1" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="3" />
+    <Label fx:id="labelSeg2" style="-fx-font-size: 40px;" text="0" GridPane.columnIndex="4" />
 
    <rowConstraints>
       <RowConstraints />
